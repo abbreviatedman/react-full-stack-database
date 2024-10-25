@@ -100,7 +100,7 @@ In this file, we will define the connection to the database. Before we can do th
 MONGODB_URI="mongodb+srv://<USERNAME>:<PASSWORD>@cluster0.<CLUSTER-CODE>.mongodb.net/fullstack-db"
 ```
 
-Remember to replace everything in the `<>` with what YOUR personal connection string looks like.
+Remember to replace the `<>` and everything in it with what YOUR personal connection string looks like.
 
 15. In `mongodb.js`, set up the connection like this:
 
@@ -270,7 +270,7 @@ module.exports = Mcu;
 
 Right now, MongoDB Compass shouldn't be showing the database just yet, so let's make sure to create it now before we write any requests to the server. This way, by the time we perform our first GET request, we will get back our starter data
 
-27. In MongoDB Compase, create a new database called `fullstack-db`. If your connection string on the `.env` file ends with a differently named database (the name comes after the `.net/`), make sure to name it the same.
+27. In MongoDB Compase, create a new database called `fullstack-db`. If your connection string in the `.env` file ends with a differently named database (the name comes after the `.net/`), make sure to name it the same.
 
 28. The collection name should be `mcus`
 
@@ -1507,7 +1507,7 @@ async function updateCharacter(req, res) {
 }
 ```
 
-Here we're targeting the correct character using the unique `_id` that exists on MongoDB. This is best practice, as it is the safest & most accurate way to do it. Then, we create a new character object where we keep the original id and name, but we can change the film & year they debuted. Finally, we contact the database and update the character before responding with a success message.
+Here we're targeting the correct character using the unique `_id` that exists in MongoDB. This is best practice, as it is the safest & most accurate way to do it. Then, we create a new character object where we keep the original id and name, but we can change the film & year they debuted. Finally, we contact the database and update the character before responding with a success message.
 
 112. Make sure to export this function at the bottom:
 
