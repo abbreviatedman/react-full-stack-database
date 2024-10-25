@@ -255,12 +255,10 @@ const McuSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
-  debutFilm: {
-    type: String,
-  },
-  debutYear: {
-    type: Number,
-  },
+
+  debutFilm: String,,
+
+  debutYear: Number,,
 });
 
 const Mcu = mongoose.model("Mcu", McuSchema);
