@@ -1462,7 +1462,7 @@ async function updateCharacter(req, res) {
 
     res.json({
       message: "success",
-      payload: updateCharacter,
+      payload: updatedCharacter,
     });
   } catch (e) {
     let errorObj = {
