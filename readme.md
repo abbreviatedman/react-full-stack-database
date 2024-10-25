@@ -72,7 +72,7 @@ We want to get some installations out of the way before we continue. That way, w
 10. In `package.json`, take a look at the `"scripts"` property. Add a property next to `"test"`:
 
 ```json
-"start": "nodemon index.js"
+"dev": "nodemon index.js"
 ```
 
 The whole `"scripts"` property should look like this now:
@@ -80,13 +80,13 @@ The whole `"scripts"` property should look like this now:
 ```json
 "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "dev": "nodemon index.js"
   },
 ```
 
-This way, we can use `npm run start` in the backend to keep the server on continuously, even if we make changes. In fact...
+This way, we can use `npm run dev` in the backend to keep the server on continuously, even if we make changes. In fact...
 
-11. In terminal, use command `npm run start` and leave the server running from now on.
+11. In terminal, use command `npm run dev` and leave the server running from now on.
 
 12. Inside of the `server` folder, create a folder called `db` for database.
 
@@ -389,7 +389,7 @@ This section might be easier with a second window of VSCode open. If you're adju
 
 41. Use command `cd client` followed by `npm start` to make sure that this works, and that you can see `localhost:3000` in your browser.
 
-42. Shut down the server for now using `ctrl + c`. Use command `npm install react-router-dom axios dotenv` and once it's done, start the server back up with `npm start`
+42. Shut down the server for now using `ctrl + c`. Use command `npm install react-router-dom axios dotenv` and once it's done, start the server back up with `npm run dev`
 
 We're going to be using `react-router-dom` to manage front-end URL changes
 
