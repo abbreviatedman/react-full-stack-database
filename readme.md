@@ -33,7 +33,7 @@ const app = express();
 
 const PORT = 3001;
 
-app.listen(PORT, () => {
+app.listen(PORT, function () {
   console.log(`server is listening on port ${PORT}`);
 });
 ```
@@ -109,15 +109,13 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 mongoose.set("strictQuery", false);
 
-function connectToMongoDB() {
-  mongoose
-    .connect(process.env.MONGODB_URI)
-    .then(() => {
-      console.log("MongoDB Connected");
-    })
-    .catch((error) => {
-      console.log(`DB connection failed: ${error}`);
-    });
+async function connectToMongoDB() {
+  try {
+    await mongoose.connect(process.env.MONGODB_URI)
+    console.log("MongoDB Connected");
+  } catch (error) {
+    console.log(`DB connection failed: ${error}`);
+  }
 }
 
 module.exports = connectToMongoDB;
@@ -134,7 +132,7 @@ const connectToMongoDB = require("./db/mongodb");
 17. Further down on this same file, update the listen method with the database connection:
 
 ```js
-app.listen(PORT, () => {
+app.listen(PORT, function () {
   console.log(`server is listening on port ${PORT}`);
 
   connectToMongoDB();
@@ -225,7 +223,7 @@ app.use(express.json());
 // const PORT = 3001;
 const PORT = process.env.PORT;
 
-app.listen(PORT, () => {
+app.listen(PORT, function () {
   console.log(`server is listening on port ${PORT}`);
 
   connectToMongoDB();
@@ -463,13 +461,17 @@ import axios from "axios";
 
 ```jsx
 useEffect(() => {
-  axios
-    .get(`${API_URL}/allCharacters`)
-    .then(async (res) => {
+  async function getCharacters() {
+    try {
+      const res = await axios.get(`${API_URL}/allCharacters`);
       console.log(res.data.payload);
       setServerData(res.data.payload);
-    })
-    .catch((e) => console.log(e));
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  getCharacters();
 }, []);
 ```
 
@@ -490,13 +492,17 @@ function App() {
   const [serverData, setServerData] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`${API_URL}/allCharacters`)
-      .then(async (res) => {
+    async function getCharacters() {
+      try {
+        const res = await axios.get(`${API_URL}/allCharacters`);
         console.log(res.data.payload);
         setServerData(res.data.payload);
-      })
-      .catch((e) => console.log(e));
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    getCharacters();
   }, []);
 
   return (
@@ -574,13 +580,17 @@ These imports, as usual, belong on the top of the page.
 
 ```jsx
 useEffect(() => {
-  axios
-    .get(`${API_URL}/allCharacters`)
-    .then(async (res) => {
+  async function getCharacters() {
+    try {
+      const res = await axios.get(`${API_URL}/allCharacters`);
       console.log(res.data.payload);
       setServerData(res.data.payload);
-    })
-    .catch((e) => console.log(e));
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  getCharacters();
 }, []);
 ```
 
@@ -611,12 +621,17 @@ function AllCharacters() {
   const [serverData, setServerData] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`${API_URL}/allCharacters`)
-      .then(async (res) => {
+    async function getCharacters() {
+      try {
+        const res = await axios.get(`${API_URL}/allCharacters`);
+        console.log(res.data.payload);
         setServerData(res.data.payload);
-      })
-      .catch((e) => console.log(e));
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    getCharacters();
   }, []);
 
   return (
@@ -973,26 +988,28 @@ import { API_URL } from "./constants";
 
 ```jsx
 async function postCharacter() {
-  fetch(`${API_URL}/createOneCharacter`, {
-    method: "post",
-    body: JSON.stringify(character),
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
-  })
-    .then(async (res) => {
-      let serverResponse = await res.json();
-      console.log(serverResponse);
-    })
-    .catch((e) => console.log(e));
+  try {
+    const response = await fetch(`${API_URL}/createOneCharacter`, {
+      method: "post",
+      body: JSON.stringify(character),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    });
 
-  setCharacter({
-    name: "",
-    debutFilm: "",
-    debutYear: 0,
-  });
+    setCharacter({
+      name: "",
+      debutFilm: "",
+      debutYear: 0,
+    });
+
+    const serverResponse = await response.json();
+    console.log(serverResponse);
+  } catch (e) {
+    console.log(e);
+  }
 }
 ```
 
@@ -1000,7 +1017,7 @@ The first thing that happens in this function is creating the character object b
 
 The next thing is that we're performing a fetch request to the back end. The URL to the back end is imported, for security reasons. The second argument to the fetch function is an object with metadata about the request. Here is where we specify that it's a POST request, we are turning the character object into JSON, and the `headers` object is so that we avoid any CORS issues. This is very important for when this project gets deployed.
 
-In the `.then()` method, right now we're just console logging the server's response so that we see if the request works out or not.
+Once we get a response, right now we're just console logging that response so that we see if the request works out or not.
 
 Finally, we're resetting all state variables. This will also clear out the form.
 
@@ -1082,32 +1099,33 @@ function CreateCharacter() {
   });
 
   async function postCharacter() {
-    fetch(`${API_URL}/createOneMcu`, {
-      method: "post",
-      body: JSON.stringify(character),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-    })
-      .then(async (res) => {
-        let serverResponse = await res.json();
-        console.log(serverResponse);
-        navigate("/mcu");
-      })
-      .catch((e) => console.log(e));
+    try {
+      const response = await fetch(`${API_URL}/createOneCharacter`, {
+        method: "post",
+        body: JSON.stringify(character),
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      });
 
-    setCharacter({
-      name: "",
-      debutFilm: "",
-      debutYear: 0,
-    });
+      setCharacter({
+        name: "",
+        debutFilm: "",
+        debutYear: 0,
+      });
+
+      const serverResponse = await response.json();
+      console.log(serverResponse);
+      navigate('/mcu')
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   function handleOnSubmit(event) {
     event.preventDefault();
-
     postCharacter();
   }
 
@@ -1294,16 +1312,20 @@ By default these values are empty, but it will be filled after we make a fetch c
 
 ```jsx
 useEffect(() => {
-  fetch(`${API_URL}/getCharacterByName/${name}`, {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-    },
-  }).then(async (res) => {
-    let result = await res.json();
-    setCharacter(result.payload);
-  });
+  async function getCharacter() {
+    const response = await fetch(`${API_URL}/getCharacterByName/${name}`, {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    })
+
+    const data = await response.json();
+    setCharacter(data.payload);
+  }
+
+  getCharacter();
 }, [name]);
 ```
 
@@ -1350,12 +1372,17 @@ function AllCharacters() {
   const [serverData, setServerData] = useState([]);
 
   useEffect(() => {
-    axios
-      .get(`${API_URL}/allCharacters`)
-      .then(async (res) => {
+    async function getCharacters() {
+      try {
+        const res = await axios.get(`${API_URL}/allCharacters`);
+        console.log(res.data.payload);
         setServerData(res.data.payload);
-      })
-      .catch((e) => console.log(e));
+      } catch (e) {
+        console.log(e);
+      }
+    }
+
+    getCharacters();
   }, []);
 
   return (
@@ -1393,16 +1420,20 @@ function OneCharacter() {
   });
 
   useEffect(() => {
-    fetch(`${API_URL}/getCharacterByName/${name}`, {
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-    }).then(async (res) => {
-      let result = await res.json();
-      setCharacter(result.payload);
-    });
+    async function getCharacter() {
+      const response = await fetch(`${API_URL}/getCharacterByName/${name}`, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Origin": "*",
+        },
+      })
+
+      const data = await response.json();
+      setCharacter(data.payload);
+    }
+
+    getCharacter();
   }, [name]);
 
   return (
@@ -1658,12 +1689,10 @@ Now that it's connected, whenever a user is typing into these fields, the state 
 119. Write a function called `handleOnSubmit` that will make a PUT request to our server:
 
 ```jsx
-function handleOnSubmit(e) {
+async function handleOnSubmit(e) {
   e.preventDefault();
-
   console.log("Submitted!");
-
-  fetch(`${API_URL}/updateCharacter/${character._id}`, {
+  await fetch(`${API_URL}/updateCharacter/${character._id}`, {
     method: "put",
     body: JSON.stringify(character),
     headers: {
@@ -1671,9 +1700,9 @@ function handleOnSubmit(e) {
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     },
-  }).then(() => {
-    setIsEditing(false);
-  });
+  })
+
+  setIsEditing(false);
 }
 ```
 
@@ -1682,7 +1711,7 @@ Again, there's a lot here so let's walk through what is happening
 - We are using `e.preventDefault();` because this function will be attached to a form, and we want to prevent refreshing the page
 - The console log is useful for knowing when this function runs
 - We are sending `debutFilm` and `debutYear` as the body of this request, so we are grabbing those values from our state variable `character`
-- We perform a `fetch` to our server, and in the `.then()` we set `isEditing` to false so that the input fields become plain text.
+- We perform a `fetch` to our server, and, when that network call is done, we set `isEditing` to false so that the input fields become plain text.
 
 120. Change the `useEffect` so that it runs either when `name` or `isEditing` changes:
 
@@ -1763,7 +1792,7 @@ The 2 files we're going to look at are:
 - `mcuController.js`
 - `mcuRouter.js`
 
-123. On `mcuController.js`, write a function called `deleteCharacter` that will contact the database and delete a character based on their `_id`:
+123. In `mcuController.js`, write a function called `deleteCharacter` that will contact the database and delete a character based on their `_id`:
 
 ```js
 async function deleteCharacter(req, res) {
@@ -1835,15 +1864,17 @@ And make sure to set it up within the functional component:
 126. In `OneCharacter.js`, write a function called `handleDelete` that will make a fetch request to our server and respond by navigating back to the component that renders all characters:
 
 ```jsx
-function handleDelete() {
-  fetch(`${API_URL}/deleteCharacter/${character._id}`, {
+async function handleDelete() {
+  await fetch(`${API_URL}/deleteCharacter/${character._id}`, {
     method: "delete",
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
       "Access-Control-Allow-Origin": "*",
     },
-  }).then(() => navigate("/mcu"));
+  });
+
+  navigate("/mcu");
 }
 ```
 
@@ -1954,13 +1985,11 @@ function OneCharacter() {
   }
 
   // 3A
-  function handleOnSubmit(e) {
+  async function handleOnSubmit(e) {
     // prevents refreshing the page, which would cancel all operations
     e.preventDefault();
-
-    console.log("submitted");
-
-    fetch(`${API_URL}/updateOneMcu/${name}`, {
+    console.log("Submitted!");
+    await fetch(`${API_URL}/updateCharacter/${character._id}`, {
       method: "put",
       body: JSON.stringify(character),
       headers: {
@@ -1968,23 +1997,22 @@ function OneCharacter() {
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
       },
-    }).then(() => {
-      // 3C
-      setIsEditing(false);
-    });
-  }
+    })
 
-  function handleDelete() {
-    fetch(`${API_URL}/deleteOneMcu/${name}`, {
+  setIsEditing(false);
+}
+
+  async function handleDelete() {
+    await fetch(`${API_URL}/deleteCharacter/${character._id}`, {
       method: "delete",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
         "Access-Control-Allow-Origin": "*",
       },
-    }).then(() => {
-      navigate("/mcu");
     });
+
+    navigate("/mcu");
   }
 
   return (
