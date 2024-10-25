@@ -25,7 +25,7 @@ Next, we want to take as little actions as possible, so let's install express an
 
 4. In terminal, use command `npm install express`
 
-5. On `index.js`, import express and write the function to listen to the server:
+5. In `index.js`, import express and write the function to listen to the server:
 
 ```js
 const express = require("express");
@@ -46,7 +46,7 @@ Now we want to be safe about where we keep information, like what the port numbe
 
 6. In terminal, use command `npm install dotenv`
 
-7. Create a `.env` file. On it, place the port number:
+7. Create a `.env` file. In it, place the port number:
 
 ```
 PORT=3001
@@ -54,7 +54,7 @@ PORT=3001
 
 Next, we want to bring this environment variable to the server.
 
-8. On `index.js`, let's update how we're using the port:
+8. In `index.js`, let's update how we're using the port:
 
 ```js
 require("dotenv").config();
@@ -69,7 +69,7 @@ We want to get some installations out of the way before we continue. That way, w
 
 9. In terminal, use command `npm install morgan mongoose nodemon cors`
 
-10. On `package.json`, take a look at the `"scripts"` property. Add a property next to `"test"`:
+10. In `package.json`, take a look at the `"scripts"` property. Add a property next to `"test"`:
 
 ```json
 "start": "nodemon index.js"
@@ -92,7 +92,7 @@ This way, we can use `npm run start` in the backend to keep the server on contin
 
 13. Inside of the folder `db` create a file called `mongodb.js`
 
-On this file, we will define the connection to the database. Before we can do that, let's make sure the connection string is safe.
+In this file, we will define the connection to the database. Before we can do that, let's make sure the connection string is safe.
 
 14. Go to MongoDB Compass and copy your connection string. Place it on your `.env` file like this:
 
@@ -102,7 +102,7 @@ MONGODB_URI="mongodb+srv://<USERNAME>:<PASSWORD>@cluster0.<CLUSTER-CODE>.mongodb
 
 Remember to replace everything in the `<>` with what YOUR personal connection string looks like.
 
-15. On `mongodb.js`, set up the connection like this:
+15. In `mongodb.js`, set up the connection like this:
 
 ```js
 const mongoose = require("mongoose");
@@ -125,7 +125,7 @@ module.exports = connectToMongoDB;
 
 To make this work, we need to import this file and run the function where our server does it's listening to requests
 
-16. On `index.js`, import this file:
+16. In `index.js`, import this file:
 
 ```js
 const connectToMongoDB = require("./db/mongodb");
@@ -141,7 +141,7 @@ app.listen(PORT, () => {
 });
 ```
 
-18. On the imports section of `index.js` make sure to import Morgan so we can keep track of URL requests in the console:
+18. In the imports section of `index.js` make sure to import Morgan so we can keep track of URL requests in the console:
 
 ```js
 const logger = require("morgan");
@@ -244,7 +244,7 @@ Next we should begin structuring this side of our applications with more folders
 
 25. The file `mcu.json` should be included with this README. Move the file `mcu.json` into the `models` folder.
 
-26. On `McuModel.js`, set up the schema for the only collection we're using for this application. The schema should follow the `mcu.json` file since that will serve as our starter data.
+26. In `McuModel.js`, set up the schema for the only collection we're using for this application. The schema should follow the `mcu.json` file since that will serve as our starter data.
 
 `McuModel.js` should look like this:
 
@@ -284,7 +284,7 @@ We should now make routes to perform a GET request and see this collection in Po
 
 30. In the `controllers` folder, create a file called `McuController.js`
 
-On this file, we will write functions that communicate with our database. These functions will be used as a response to URL requests.
+In this file, we will write functions that communicate with our database. These functions will be used as a response to URL requests.
 
 31. Import the `McuModel` onto this file
 
@@ -425,7 +425,7 @@ This is going to contain the list of characters from our database, which we will
 
 49. Inside the `client` folder, create a file called `.env`
 
-50. On the `.env` file, type the following:
+50. In the `.env` file, type the following:
 
 ```env
 REACT_APP_API_URL="http://localhost:3001/api"
@@ -437,7 +437,7 @@ The other benefit of this is that the local version will always make requests to
 
 51. In the `src` folder, create a file called `constants.js`
 
-52. On `constants.js`, write the following:
+52. In `constants.js`, write the following:
 
 ```jsx
 export const API_URL = process.env.REACT_APP_API_URL;
@@ -535,7 +535,7 @@ Now that our `App.js` is expanding, it's time to start separating our concerns. 
 
 57. In the `src` folder, create a file called `AllCharacters.js`
 
-58. On `AllCharacters.js` import `useState` and `useEffect`:
+58. In `AllCharacters.js` import `useState` and `useEffect`:
 
 ```jsx
 import React, { useState, useEffect } from `react`;
@@ -657,7 +657,7 @@ Now let's display this component through the `App.js` component
 import AllCharacters from "./AllCharacters";
 ```
 
-66. On `App.js` under the `<h1>` tag, display the `AllCharacters` component:
+66. In `App.js` under the `<h1>` tag, display the `AllCharacters` component:
 
 ```jsx
 return (
@@ -672,7 +672,7 @@ At this point, you should see all the characters listed in the browser!
 
 At this point, we should only render components when the user decides to see it. We will now be applying React Router functionality, so that we can properly link to different components
 
-67. On `index.js`, import BrowserRouter and wrap the `App` component in `BrowserRouter` component tags:
+67. In `index.js`, import BrowserRouter and wrap the `App` component in `BrowserRouter` component tags:
 
 ```jsx
 import { BrowserRouter } from "react-router-dom";
@@ -693,7 +693,7 @@ This way, everything in our application is within the context of using BrowserRo
 
 Let's begin by defining some of our routes
 
-68. On `App.js`, first make sure to import `Routes`, `Route` and `Link` at the top:
+68. In `App.js`, first make sure to import `Routes`, `Route` and `Link` at the top:
 
 ```jsx
 import { Routes, Route, Link } from "react-router-dom";
@@ -761,7 +761,7 @@ If you notice in the browser's console, you will get a warning that there are no
 
 71. In the `src` folder, create a file called `Home.js`
 
-72. On `Home.js`, create the following functional component:
+72. In `Home.js`, create the following functional component:
 
 ```jsx
 function Home() {
@@ -775,7 +775,7 @@ function Home() {
 export default Home;
 ```
 
-73. On `App.js`, import the `Home` component and create a route and link for it.
+73. In `App.js`, import the `Home` component and create a route and link for it.
 
 Here's the import:
 
@@ -810,7 +810,7 @@ The 2 files we're going to look at are:
 
 This is because all we need to do is write the database functionality on the Controller, and define the URL Route on the Router.
 
-74. On `mcuController.js`, write a function that creates a character to the database:
+74. In `mcuController.js`, write a function that creates a character to the database:
 
 ```jsx
 async function createOneCharacter(req, res) {
@@ -846,7 +846,7 @@ module.exports = {
 };
 ```
 
-76. On `McuRouter.js`, import the function and define the route to be a POST request at URL extension `'/oneMcu/:name'`:
+76. In `McuRouter.js`, import the function and define the route to be a POST request at URL extension `'/oneMcu/:name'`:
 
 Here is the import:
 
@@ -935,7 +935,7 @@ When we do something like `onChange={(e) => setCharacter({...character, debutFil
 
 Before we make sure that it works, let's add a route to this component and test our ability to render the form itself.
 
-84. On `App.js`, import the component we just created & define a route that will render this form:
+84. In `App.js`, import the component we just created & define a route that will render this form:
 
 Here is the import:
 
@@ -969,7 +969,7 @@ The next thing we should do is create a function that makes a POST request to ou
 import { API_URL } from "./constants";
 ```
 
-87. On `CreateCharacter.js` above the return statement, create an async function that will post to the database:
+87. In `CreateCharacter.js` above the return statement, create an async function that will post to the database:
 
 ```jsx
 async function postCharacter() {
@@ -1187,9 +1187,9 @@ const { name } = useParams();
 <h1>The character {name} debuted in the film ...</h1>
 ```
 
-We will come back and complete this file later. For now, let's just create a route to it
+We will come back and complete this file later. For now, let's just create a route to it.
 
-98. On `App.js`, import and add a route to the `OneCharacter` component:
+98. In `App.js`, import and add a route to the `OneCharacter` component:
 
 Here is the import:
 
@@ -1207,7 +1207,7 @@ Now we can render the component. For example, if you go to `localhost:3000/mcu/C
 
 Let's make a small change to the `CreateCharacter` component so that it goes to this component.
 
-99. On `CreateCharacter.js`, update the `navigate` function:
+99. In `CreateCharacter.js`, update the `navigate` function:
 
 ```jsx
 navigate(`/mcu/${serverResponse.payload.name}`);
@@ -1217,13 +1217,12 @@ Now when you create a character, it will go to that component based on the name 
 
 ## Server-side feature: getCharacterByName
 
-100. On `mcuController.js`, write a function called `getCharacterByName` which will return with the character's document.
+100. In `mcuController.js`, write a function called `getCharacterByName` which will return with the character's document.
 
 ```js
 async function getCharacterByName(req, res) {
   try {
     let foundCharacter = await Mcu.findOne({ name: req.params.name });
-
     res.json({
       message: "success",
       payload: foundCharacter,
@@ -1250,7 +1249,7 @@ module.exports = {
 };
 ```
 
-102. On `mcuRouter.js`, import this function:
+102. In `mcuRouter.js`, import this function:
 
 ```js
 const {
@@ -1273,7 +1272,7 @@ Once it's tested and it's working, it's time to set this up for the front-end
 
 ## Client-side feature: OneCharacter component
 
-104. On `OneCharacter.js`, import `useEffect` and `useState` at the top. Let's also bring in the `API_URL` that we need to contact our back-end server with:
+104. In `OneCharacter.js`, import `useEffect` and `useState` at the top. Let's also bring in the `API_URL` that we need to contact our back-end server with:
 
 ```jsx
 import { useState, useEffect } from "react";
@@ -1437,7 +1436,7 @@ The 2 files we're going to look at are:
 - `mcuController.js`
 - `mcuRouter.js`
 
-111. On `mcuController.js`, create a function called `updateCharacter`:
+111. In `mcuController.js`, create a function called `updateCharacter`:
 
 ```js
 async function updateCharacter(req, res) {
@@ -1490,7 +1489,7 @@ module.exports = {
 };
 ```
 
-113. On `mcuRouter.js`, import the function we just wrote and create a route for it.
+113. In `mcuRouter.js`, import the function we just wrote and create a route for it.
 
 Here is the import:
 
@@ -1529,7 +1528,7 @@ Before we write any code, let's plan out how this is going to work from the user
 
 These changes will all happen on the `OneCharacter` component
 
-113. On `OneCharacter.js`, write a state variable called `isEditing`:
+113. In `OneCharacter.js`, write a state variable called `isEditing`:
 
 ```jsx
 const [isEditing, setIsEditing] = useState(false);
@@ -1629,7 +1628,7 @@ setCharacter({
 
 This way, we can use this same function for both input fields.
 
-118. On the input fields, write an `onChange` attribute that uses this function we just wrote:
+118. In the input fields, write an `onChange` attribute that uses this function we just wrote:
 
 ```jsx
 <p>
@@ -1755,7 +1754,7 @@ return (
 
 Now we can finally test this on the front end!! When you edit a character's details, make sure to check with Mongo Compass that the database is properly being updated.
 
-We have the `C`reate, `R`ead, and `U`pdate parts of `CRUD`, the final function to add to this is the `D`elete functionality.
+We have the `C`reate, `R`ead, and `U`pdate parts of `CRUD`. The final function to add to this is the `D`elete functionality.
 
 ## D/CRUD - Server-side Delete Functionality
 
@@ -1801,7 +1800,7 @@ module.exports = {
 };
 ```
 
-125. On `mcuRouter.js`, import the function we just wrote:
+125. In `mcuRouter.js`, import the function we just wrote:
 
 ```js
 const {
@@ -1825,7 +1824,7 @@ Once it works, let's make it work on the front end
 
 ## D/CRUD - Client-side Delete Functionality
 
-On the `OneCharacter.js`, we want the delete to redirect a user back to the list of all characters, so we can see that it's disappeared from the dataset. First let's import `useNavigate` to accomplish this:
+In `OneCharacter.js`, we want the delete to redirect a user back to the list of all characters, so we can see that it's disappeared from the dataset. First let's import `useNavigate` to accomplish this:
 
 `import { useParams, useNavigate } from 'react-router-dom'`
 
@@ -1833,7 +1832,7 @@ And make sure to set it up within the functional component:
 
 `const navigate = useNavigate()`
 
-126. On `OneCharacter.js`, write a function called `handleDelete` that will make a fetch request to our server and respond by navigating back to the component that renders all characters:
+126. In `OneCharacter.js`, write a function called `handleDelete` that will make a fetch request to our server and respond by navigating back to the component that renders all characters:
 
 ```jsx
 function handleDelete() {
